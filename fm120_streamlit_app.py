@@ -2,7 +2,15 @@ import openai
 import streamlit as st
 import pandas as pd
 
-# Set your OpenAI API key
+# 🔐 Require a password before continuing
+st.title("FM120 AI Instructional Assistant")
+
+password = st.text_input("Enter access code", type="password")
+if password != "fm2025":
+    st.warning("Please enter the correct access code to use this app.")
+    st.stop()
+
+# ✅ Secure API key from Streamlit secrets
 api_key = st.secrets["OPENAI_API_KEY"]
 client = openai.OpenAI(api_key=api_key)
 
@@ -26,9 +34,7 @@ Problem: {input_text}"""
     )
     return response.choices[0].message.content
 
-# Streamlit UI
-st.title("FM120 AI Instructional Assistant")
-
+# Main interface
 mode = st.selectbox("Choose Instructional Mode", ["Feedback", "Socratic", "Variant"])
 user_input = st.text_area("Paste student answer or problem text here")
 
